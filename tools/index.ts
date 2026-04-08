@@ -262,10 +262,10 @@ function registerFindCompanies(pi: ExtensionAPI) {
 
 /**
  * Форматирование статуса для вывода в чат
- * Формат: статус + провайдер + инструмент + результаты
+ * Формат: статус + провайдер + инструмент
  */
 function formatStatusText(response: any, toolName: string): string {
-  const { provider, isFallback, results, query } = response;
+  const { provider, isFallback, results } = response;
   
   let emoji = "✅";
   let providerName = provider;
@@ -279,24 +279,8 @@ function formatStatusText(response: any, toolName: string): string {
   // Capitalize provider name
   providerName = providerName.charAt(0).toUpperCase() + providerName.slice(1);
   
-  // Формируем вывод: Провайдер: инструмент + результаты
-  let output = `${emoji} ${providerName}: ${toolName}\n\n`;
-  output += `📊 Найдено: ${results?.length || 0} результатов\n\n`;
-  
-  // Добавляем топ-5 результатов для анализа
-  if (results && results.length > 0) {
-    output += `### Топ результатов:\n\n`;
-    results.slice(0, 5).forEach((r: any, i: number) => {
-      output += `${i + 1}. **${r.title}**\n`;
-      output += `   ${r.url}\n`;
-      if (r.snippet) {
-        output += `   ${r.snippet.slice(0, 150)}${r.snippet.length > 150 ? '...' : ''}\n`;
-      }
-      output += `\n`;
-    });
-  }
-  
-  return output;
+  // Формируем вывод: Провайдер: инструмент
+  return `${emoji} ${providerName}: ${toolName}`;
 }
 
 /**
