@@ -47,7 +47,7 @@ function registerSearchWeb(pi: ExtensionAPI) {
         });
         
         // Формируем минимальный вывод для чата
-        const statusText = formatStatusText(response);
+        const statusText = formatStatusText(response, "search_web");
         
         return {
           content: [{ type: "text", text: statusText }],
@@ -100,7 +100,7 @@ function registerSearchNews(pi: ExtensionAPI) {
           },
         });
         
-        const statusText = formatStatusText(response);
+        const statusText = formatStatusText(response, "search_news");
         
         return {
           content: [{ type: "text", text: statusText }],
@@ -147,7 +147,7 @@ function registerSearchResearch(pi: ExtensionAPI) {
           },
         });
         
-        const statusText = formatStatusText(response);
+        const statusText = formatStatusText(response, "search_research");
         
         return {
           content: [{ type: "text", text: statusText }],
@@ -194,7 +194,7 @@ function registerFindPeople(pi: ExtensionAPI) {
           category: "people",
         });
         
-        const statusText = formatStatusText(response);
+        const statusText = formatStatusText(response, "find_people");
         
         return {
           content: [{ type: "text", text: statusText }],
@@ -244,7 +244,7 @@ function registerFindCompanies(pi: ExtensionAPI) {
           category: "company",
         });
         
-        const statusText = formatStatusText(response);
+        const statusText = formatStatusText(response, "find_companies");
         
         return {
           content: [{ type: "text", text: statusText }],
@@ -262,10 +262,10 @@ function registerFindCompanies(pi: ExtensionAPI) {
 
 /**
  * Форматирование статуса для вывода в чат
- * Минимальный формат: статус + URL провайдера
+ * Формат: статус + провайдер + инструмент
  */
-function formatStatusText(response: any): string {
-  const { provider, isFallback, results, requestUrl } = response;
+function formatStatusText(response: any, toolName: string): string {
+  const { provider, isFallback, results } = response;
   
   let emoji = "✅";
   let providerName = provider;
@@ -276,15 +276,11 @@ function formatStatusText(response: any): string {
     providerName = `${provider} (fallback)`;
   }
   
-  // Формируем URL для отображения
-  let url = requestUrl || `https://api.${provider}.com`;
+  // Capitalize provider name
+  providerName = providerName.charAt(0).toUpperCase() + providerName.slice(1);
   
-  // Сокращаем длинные URL
-  if (url.length > 50) {
-    url = url.slice(0, 47) + "...";
-  }
-  
-  return `${emoji} ${url}${isFallback ? " (fallback)" : ""}`;
+  // Формируем вывод: Провайдер: инструмент
+  return `${emoji} ${providerName}: ${toolName}`;
 }
 
 /**
