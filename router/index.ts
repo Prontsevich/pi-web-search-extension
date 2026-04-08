@@ -2,7 +2,8 @@
 // Web Search Extension — Роутер поисковых провайдеров
 // ============================================================================
 
-import type { SearchResponse, SearchResult, SearchOptions, SearchError, QueryType } from "../types";
+import type { SearchResponse, SearchResult, SearchOptions, SearchError } from "../types";
+import { QueryType } from "../types";
 import { TavilyProvider, ExaProvider, PerplexityProvider } from "../providers";
 import { GoogleProvider, WikipediaProvider, ArxivProvider, HackerNewsProvider } from "../fallback";
 import { createTransformer } from "../transformers";
